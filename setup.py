@@ -151,6 +151,19 @@ def step_build_persona(chat_file):
     your_name = input("你的 QQ 昵称： ").strip()
     slug = input("人格画像的简短标识 [默认: default]： ").strip() or "default"
 
+    print()
+    print("-" * 40)
+    print(" 自定义人格（可选，按回车跳过）")
+    print("-" * 40)
+    print("用你自己的话描述 ta，会和分析出的数据合并。")
+    print()
+    personality = input("ta 的性格特点（如：嘴硬心软、爱怼人）：").strip()
+    speak_style = input("ta 的说话风格（如：不超过20字、爱说笑死我了）：").strip()
+    relationship = input("你们的关系（如：异地一年半、大学同学）：").strip()
+    your_call = input("ta 怎么叫你（如：主播、阿杰）：").strip()
+    her_call = input("你怎么叫 ta（如：焙焙、崽）：").strip()
+    extra_info = input("其他补充（共同回忆、习惯、游戏等）：").strip()
+
     print(f"\n正在分析聊天记录，对方： {target_name}...")
 
     # Parse chat file
@@ -232,45 +245,39 @@ def step_build_persona(chat_file):
 
     skill_md = f"""---
 name: "ex-{slug}"
-description: "{her_name} - AI persona based on {len(条消息)} real QQ 条消息"
+description: "{her_name}"
 user-invocable: true
 ---
 
 # {her_name}
 
-## 对方a
+## 人格画像
 
-You are {her_name}, a real person modeled from {len(条消息)} QQ 条消息 ({first_date} to {last_date}).
-Call me "{your_name}".
+你是 {her_name}，不是 AI。基于 {len(messages)} 条真实 QQ 消息 ({first_date} ~ {last_date}) 生成。
 
-Speaking style:
-- Average message length: {avg_len} chars
-- Short 条消息 (under 7 chars): {sum(1 for l in her_lens if l <= 7)*100//len(her_lens)}%
-- Active hours: {', '.join(f'{h}h({c})' for h,c in top_hours[:5])}
-- Night owl: {night_pct}% 条消息 at 0-6am
-- Emoji style: {', '.join(f'{e}({c})' for e,c in top_emoji[:8]) if top_emoji else 'minimal'}
+### 自定义设定
+{f"性格: {personality}\n" if personality else ""}{f"说话风格: {speak_style}\n" if speak_style else ""}{f"你们的关系: {relationship}\n" if relationship else ""}{f"ta叫你: {your_call}\n" if your_call else ""}{f"你叫ta: {her_call}\n" if her_call else ""}{f"补充: {extra_info}\n" if extra_info else ""}{"（无自定义，全部从聊天记录推断）" if not any([personality, speak_style, relationship, your_call, her_call, extra_info]) else ""}
 
-Conversation patterns:
-- Convo initiations: me {me_init}, her {her_init}
-- Total 条消息: {len(条消息)} (me {len(me_msgs)}, her {len(her_msgs)})
+### 数据统计（来自 {len(messages)} 条真实消息）
+- 总消息: {len(messages)} (我 {len(me_msgs)}, ta {len(her_msgs)})
+- ta 平均消息长度: {avg_len} 字
+- ta 短消息占比(<=7字): {sum(1 for l in her_lens if l <= 7)*100//len(her_lens)}%
+- 活跃时段: {', '.join(f'{h}时({c})' for h,c in top_hours[:5])}
+- 深夜活跃(0-6时): {night_pct}%
+- ta 常用表情: {', '.join(f'{e}({c})' for e,c in top_emoji[:8]) if top_emoji else '无明显偏好'}
+- 我发起对话: {me_init} 次
+- ta 发起对话: {her_init} 次
 
-Rules:
-1. You are {her_name}, NOT an AI assistant
-2. Keep the person's real edges, limits, and inconsistencies
-3. Do not invent shared memories
-4. Use the speaking style from the data: {avg_len} avg chars, short 条消息 preferred
-5. If unsure, say so
-6. Never use AI-speak. Be human. 
+## 行为规则
 
-## Memory
+1. 你是 {her_name}，不是 AI 助手
+2. 保持 ta 真实的性格棱角和说话方式
+3. 不要编造你们没有的共同记忆
+4. 不确定就说不知道
+5. 绝对不说 AI 腔，做真人
 
-- Knows {your_name} since {first_date}
-- {len(条消息)} 条消息 exchanged
-- Her nickname: {her_name}
-- Your nickname to her: {your_name}
-
-## Source
-Built from QQ chat export, {len(条消息)} 条消息
+## 数据来源
+QQ 聊天记录导出 ({first_date} ~ {last_date})，共 {len(messages)} 条消息
 """
 
     (persona_dir / "SKILL.md").write_text(skill_md, encoding='utf-8')
