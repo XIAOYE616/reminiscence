@@ -1,268 +1,220 @@
-# 👻 ex-bot — 让前任「活过来」的 QQ 聊天机器人
-
-> 💡 把你们曾经的聊天记录变成 AI 人格，用 DeepSeek 驱动，通过 QQ 小号 7×24 陪你聊天。
-
+﻿# 馃懟 ex-bot 鈥?璁╁墠浠汇€屾椿杩囨潵銆嶇殑 QQ 鑱婂ぉ鏈哄櫒浜?
+> 馃挕 鎶婁綘浠浘缁忕殑鑱婂ぉ璁板綍鍙樻垚 AI 浜烘牸锛岀敤 DeepSeek 椹卞姩锛岄€氳繃 QQ 灏忓彿 7脳24 闄綘鑱婂ぉ銆?
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue)](https://python.org)
-[![平台](https://img.shields.io/badge/平台-Windows%2010%2F11-lightgrey)]()
+[![骞冲彴](https://img.shields.io/badge/骞冲彴-Windows%2010%2F11-lightgrey)]()
 
 ---
 
-## 🤔 这是什么？
+## 馃 杩欐槸浠€涔堬紵
 
-你有没有想过——把前任的聊天记录喂给 AI，让它学会「用 ta 的语气回复你」？
+浣犳湁娌℃湁鎯宠繃鈥斺€旀妸鍓嶄换鐨勮亰澶╄褰曞杺缁?AI锛岃瀹冨浼氥€岀敤 ta 鐨勮姘斿洖澶嶄綘銆嶏紵
 
-ex-bot 就是干这个的：
-
+ex-bot 灏辨槸骞茶繖涓殑锛?
 ```
-你的 QQ 聊天记录 (.txt)
-        ↓  自动分析
-   ta 的人格画像 (persona)
-        ↓  喂给 AI
-   DeepSeek + persona = ta 的语气
-        ↓  自动回复
-   QQ 小号 → 你的大号 ← 就像 ta 在和你聊
+浣犵殑 QQ 鑱婂ぉ璁板綍 (.txt)
+        鈫? 鑷姩鍒嗘瀽
+   ta 鐨勪汉鏍肩敾鍍?(persona)
+        鈫? 鍠傜粰 AI
+   DeepSeek + persona = ta 鐨勮姘?        鈫? 鑷姩鍥炲
+   QQ 灏忓彿 鈫?浣犵殑澶у彿 鈫?灏卞儚 ta 鍦ㄥ拰浣犺亰
 ```
 
-**全程自动**，你只需要：
-1. 导出 QQ 聊天记录（点几下鼠标）
-2. 准备一个 DeepSeek API Key（免费注册就有）
-3. 准备一个 QQ 小号（和大号是好友）
-4. 运行 `python setup.py`
+**鍏ㄧ▼鑷姩**锛屼綘鍙渶瑕侊細
+1. 瀵煎嚭 QQ 鑱婂ぉ璁板綍锛堢偣鍑犱笅榧犳爣锛?2. 鍑嗗涓€涓?DeepSeek API Key锛堝厤璐规敞鍐屽氨鏈夛級
+3. 鍑嗗涓€涓?QQ 灏忓彿锛堝拰澶у彿鏄ソ鍙嬶級
+4. 杩愯 `python setup.py`
 
 ---
 
-## 📋 你需要准备
-
-| 东西 | 怎么获取 | 花费 |
+## 馃搵 浣犻渶瑕佸噯澶?
+| 涓滆タ | 鎬庝箞鑾峰彇 | 鑺辫垂 |
 |------|---------|------|
-| **QQ 聊天记录** | QQ 消息管理器导出 `.txt` | 免费 |
-| **DeepSeek API Key** | [platform.deepseek.com](https://platform.deepseek.com) 注册→API Keys | 注册送 500 万 token（够聊很久） |
-| **QQ 小号** | 注册一个新 QQ，加大号为好友 | 免费 |
-| **Windows 电脑** | Win10/11 都行 | 你有 |
-| **Python** | [python.org](https://python.org) 下载 3.10+ | 免费 |
+| **QQ 鑱婂ぉ璁板綍** | QQ 娑堟伅绠＄悊鍣ㄥ鍑?`.txt` | 鍏嶈垂 |
+| **DeepSeek API Key** | [platform.deepseek.com](https://platform.deepseek.com) 娉ㄥ唽鈫扐PI Keys | 娉ㄥ唽閫?500 涓?token锛堝鑱婂緢涔咃級 |
+| **QQ 灏忓彿** | 娉ㄥ唽涓€涓柊 QQ锛屽姞澶у彿涓哄ソ鍙?| 鍏嶈垂 |
+| **Windows 鐢佃剳** | Win10/11 閮借 | 浣犳湁 |
+| **Python** | [python.org](https://python.org) 涓嬭浇 3.10+ | 鍏嶈垂 |
 
 ---
 
-## 🚀 5 分钟上手
+## 馃殌 5 鍒嗛挓涓婃墜
 
-### 第一步：下载项目
+### 绗竴姝ワ細涓嬭浇椤圭洰
 
 ```bash
-# 打开 PowerShell 或 CMD，输入：
+# 鎵撳紑 PowerShell 鎴?CMD锛岃緭鍏ワ細
 git clone https://github.com/XIAOYE616/reminiscence.git
 cd reminiscence
 ```
 
-> 没有 git？点页面右上角绿色 `Code` → `Download ZIP` → 解压也行
+> 娌℃湁 git锛熺偣椤甸潰鍙充笂瑙掔豢鑹?`Code` 鈫?`Download ZIP` 鈫?瑙ｅ帇涔熻
 
-### 第二步：运行安装向导
+### 绗簩姝ワ細杩愯瀹夎鍚戝
 
 ```bash
 python setup.py
 ```
 
-然后跟着提示走：
+鐒跺悗璺熺潃鎻愮ず璧帮細
 
 ```
-  👻 ex-bot v1.0
+  馃懟 ex-bot v1.0
 
-  [1/5] 请输入 DeepSeek API Key: sk-xxxx
-        （去 platform.deepseek.com 注册就有）
+  [1/5] 璇疯緭鍏?DeepSeek API Key: sk-xxxx
+        锛堝幓 platform.deepseek.com 娉ㄥ唽灏辨湁锛?
+  [2/5] QQ 鑱婂ぉ璁板綍鍦ㄥ摢閲岋紵
+        [1] 鎴戠敤 QCE 瀵煎嚭浜嗭紙鎺ㄨ崘锛?        [2] 鏂囦欢宸茬粡鍦ㄦ闈簡
+        [3] 鎴戠敤 QQ 鑷甫鐨勬秷鎭鐞嗗櫒瀵煎嚭浜?
+  [3/5] ta 鍙粈涔堬紵鈫?鐒欑剻
+        浣犲彨浠€涔堬紵 鈫?鎶樼櫧鑿?        姝ｅ湪鍒嗘瀽 13363 鏉℃秷鎭?..
+        鉁?persona 宸茬敓鎴?
+  [4/5] 姝ｅ湪閰嶇疆 NapCat...
+        璇疯緭鍏?QQ 灏忓彿锛?460673995
+        璇风敤鎵嬫満 QQ 鎵弿灞忓箷涓婄殑浜岀淮鐮?
+  [5/5] 馃帀 Bot 鍚姩锛佺粰 QQ 灏忓彿鍙戞秷鎭瘯璇?```
 
-  [2/5] QQ 聊天记录在哪里？
-        [1] 我用 QCE 导出了（推荐）
-        [2] 文件已经在桌面了
-        [3] 我用 QQ 自带的消息管理器导出了
+### 绗笁姝ワ細鑱婂ぉ锛?
+鎵撳紑 QQ锛岀粰浣犵殑**灏忓彿**鍙戞秷鎭€斺€攖a 浼氱敤 DeepSeek + 鍓嶄换璇皵鑷姩鍥炲浣犮€?
+---
 
-  [3/5] ta 叫什么？→ 焙焙
-        你叫什么？ → 折白菊
-        正在分析 13363 条消息...
-        ✅ persona 已生成
+## 馃搳 鎬庝箞瀵煎嚭 QQ 鑱婂ぉ璁板綍锛?
+### 鏂规硶 A锛歈Q 鑷甫娑堟伅绠＄悊鍣紙鏈€绠€鍗曪級
 
-  [4/5] 正在配置 NapCat...
-        请输入 QQ 小号：1460673995
-        请用手机 QQ 扫描屏幕上的二维码
+1. 鎵撳紑 QQ锛屾壘鍒板拰 ta 鐨勮亰澶╃獥鍙?2. 鍙抽敭娑堟伅鍖哄煙 鈫?**娑堟伅绠＄悊鍣?* 鈫?**瀵煎嚭娑堟伅璁板綍**
+3. 鏍煎紡閫?**鏂囨湰鏂囦欢 (.txt)**
+4. 鏃堕棿鑼冨洿閫?**鍏ㄩ儴**
+5. 淇濆瓨鍒版闈?
+### 鏂规硶 B锛歈CE锛堝姛鑳芥洿寮猴紝鏀寔鎵€鏈夋牸寮忥級
 
-  [5/5] 🎉 Bot 启动！给 QQ 小号发消息试试
-```
+濡傛灉浣犲凡缁忚浜?NapCat Framework锛堝惈 QCE锛夛細
 
-### 第三步：聊天！
-
-打开 QQ，给你的**小号**发消息——ta 会用 DeepSeek + 前任语气自动回复你。
+1. 鎵撳紑 `http://localhost:40653/qce-v4-tool`
+2. Token 鍦?`C:\Users\浣犵殑鐢ㄦ埛鍚峔.qq-chat-exporter\security.json`
+3. 閫夋嫨鑱旂郴浜?鈫?瀵煎嚭
 
 ---
 
-## 📊 怎么导出 QQ 聊天记录？
-
-### 方法 A：QQ 自带消息管理器（最简单）
-
-1. 打开 QQ，找到和 ta 的聊天窗口
-2. 右键消息区域 → **消息管理器** → **导出消息记录**
-3. 格式选 **文本文件 (.txt)**
-4. 时间范围选 **全部**
-5. 保存到桌面
-
-### 方法 B：QCE（功能更强，支持所有格式）
-
-如果你已经装了 NapCat Framework（含 QCE）：
-
-1. 打开 `http://localhost:40653/qce-v4-tool`
-2. Token 在 `C:\Users\你的用户名\.qq-chat-exporter\security.json`
-3. 选择联系人 → 导出
-
----
-
-## 🏗 原理架构
+## 馃彈 鍘熺悊鏋舵瀯
 
 ```
-┌──────────┐    发消息     ┌──────────┐   WebSocket   ┌──────────┐
-│ 你的大号  │ ──────────→  │ QQ 小号   │ ───────────→  │ ex-bot   │
-│ 4775...  │ ←────────── │(NapCat)  │ ←─────────── │ (Python) │
-└──────────┘   自动回复    └──────────┘   HTTP API    └────┬─────┘
-                                                          │
-                                                    调用 DeepSeek
-                                                          │
-                                                   ┌──────┴──────┐
-                                                   │  DeepSeek   │
-                                                   │ + persona   │
-                                                   └─────────────┘
-```
+鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?   鍙戞秷鎭?    鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?  WebSocket   鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?鈹?浣犵殑澶у彿  鈹?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈫? 鈹?QQ 灏忓彿   鈹?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈫? 鈹?ex-bot   鈹?鈹?4775...  鈹?鈫愨攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ 鈹?NapCat)  鈹?鈫愨攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€ 鈹?(Python) 鈹?鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?  鑷姩鍥炲    鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?  HTTP API    鈹斺攢鈹€鈹€鈹€鈹攢鈹€鈹€鈹€鈹€鈹?                                                          鈹?                                                    璋冪敤 DeepSeek
+                                                          鈹?                                                   鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹粹攢鈹€鈹€鈹€鈹€鈹€鈹?                                                   鈹? DeepSeek   鈹?                                                   鈹?+ persona   鈹?                                                   鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?```
 
-**关键组件：**
+**鍏抽敭缁勪欢锛?*
 
-| 组件 | 作用 |
+| 缁勪欢 | 浣滅敤 |
 |------|------|
-| **NapCat** | 让 QQ 能被程序控制（注入 QQ NT 进程） |
-| **OneBot** | QQ 机器人的标准接口协议 |
-| **bot.py** | 监听消息 → 调 AI → 发回复 |
-| **DeepSeek** | 国产大模型，便宜好用，中文理解力强 |
-| **Persona** | 从聊天记录里提取的人格画像（system prompt） |
+| **NapCat** | 璁?QQ 鑳借绋嬪簭鎺у埗锛堟敞鍏?QQ NT 杩涚▼锛?|
+| **OneBot** | QQ 鏈哄櫒浜虹殑鏍囧噯鎺ュ彛鍗忚 |
+| **bot.py** | 鐩戝惉娑堟伅 鈫?璋?AI 鈫?鍙戝洖澶?|
+| **DeepSeek** | 鍥戒骇澶фā鍨嬶紝渚垮疁濂界敤锛屼腑鏂囩悊瑙ｅ姏寮?|
+| **Persona** | 浠庤亰澶╄褰曢噷鎻愬彇鐨勪汉鏍肩敾鍍忥紙system prompt锛?|
 
 ---
 
-## 📁 项目结构
+## 馃搧 椤圭洰缁撴瀯
 
 ```
 reminiscence/
-├── setup.py                ← 🎯 主控脚本（一键安装/配置/启动）
-├── scripts/
-│   └── bot.py              ← QQ bot 核心（WebSocket 服务端）
-├── persona/
-│   └── SKILL.md.sample     ← 角色卡模板（生成后在这里）
-├── config/
-│   └── config.json         ← 你的配置（自动生成，不要提交！）
-├── tools/                  ← NapCat 自动下载到这里
-├── README.md               ← 你正在看的这个
-├── LICENSE                 ← MIT
-└── .gitignore
+鈹溾攢鈹€ setup.py                鈫?馃幆 涓绘帶鑴氭湰锛堜竴閿畨瑁?閰嶇疆/鍚姩锛?鈹溾攢鈹€ scripts/
+鈹?  鈹斺攢鈹€ bot.py              鈫?QQ bot 鏍稿績锛圵ebSocket 鏈嶅姟绔級
+鈹溾攢鈹€ persona/
+鈹?  鈹斺攢鈹€ SKILL.md.sample     鈫?瑙掕壊鍗℃ā鏉匡紙鐢熸垚鍚庡湪杩欓噷锛?鈹溾攢鈹€ config/
+鈹?  鈹斺攢鈹€ config.json         鈫?浣犵殑閰嶇疆锛堣嚜鍔ㄧ敓鎴愶紝涓嶈鎻愪氦锛侊級
+鈹溾攢鈹€ tools/                  鈫?NapCat 鑷姩涓嬭浇鍒拌繖閲?鈹溾攢鈹€ README.md               鈫?浣犳鍦ㄧ湅鐨勮繖涓?鈹溾攢鈹€ LICENSE                 鈫?MIT
+鈹斺攢鈹€ .gitignore
 ```
 
 ---
 
-## 🎮 命令参考
-
-| 命令 | 作用 |
+## 馃幃 鍛戒护鍙傝€?
+| 鍛戒护 | 浣滅敤 |
 |------|------|
-| `python setup.py` | 首次安装向导 |
-| `python setup.py bot` | 只启动 bot（已配置过的话） |
-| `python setup.py persona` | 只重新生成 persona |
+| `python setup.py` | 棣栨瀹夎鍚戝 |
+| `python setup.py bot` | 鍙惎鍔?bot锛堝凡閰嶇疆杩囩殑璇濓級 |
+| `python setup.py persona` | 鍙噸鏂扮敓鎴?persona |
 
-**Bot 运行时支持的聊天指令：**
+**Bot 杩愯鏃舵敮鎸佺殑鑱婂ぉ鎸囦护锛?*
 
-| 指令 | 效果 |
+| 鎸囦护 | 鏁堟灉 |
 |------|------|
-| `/reset` | 清空对话记忆（ta 会忘记刚才聊了什么） |
-| `/status` | 查看 bot 运行状态 |
+| `/reset` | 娓呯┖瀵硅瘽璁板繂锛坱a 浼氬繕璁板垰鎵嶈亰浜嗕粈涔堬級 |
+| `/status` | 鏌ョ湅 bot 杩愯鐘舵€?|
 
 ---
 
-## 🔧 常见问题
+## 馃敡 甯歌闂
 
 <details>
-<summary><b>Q: DeepSeek 要钱吗？</b></summary>
+<summary><b>Q: DeepSeek 瑕侀挶鍚楋紵</b></summary>
 
-注册就送 500 万 token。一条消息大约消耗 500 token，也就是能聊 **1 万条消息**。用完之后：
-- 充值 10 块钱 ≈ 聊到天荒地老
-- 或者换用其他兼容 OpenAI 格式的 API（如 Qwen、GLM 等）
+娉ㄥ唽灏遍€?500 涓?token銆備竴鏉℃秷鎭ぇ绾︽秷鑰?500 token锛屼篃灏辨槸鑳借亰 **1 涓囨潯娑堟伅**銆傜敤瀹屼箣鍚庯細
+- 鍏呭€?10 鍧楅挶 鈮?鑱婂埌澶╄崚鍦拌€?- 鎴栬€呮崲鐢ㄥ叾浠栧吋瀹?OpenAI 鏍煎紡鐨?API锛堝 Qwen銆丟LM 绛夛級
 </details>
 
 <details>
-<summary><b>Q: QQ 小号会被封吗？</b></summary>
+<summary><b>Q: QQ 灏忓彿浼氳灏佸悧锛?/b></summary>
 
-正常使用不会。但注意：
-- 不要用 bot 发广告、骚扰
-- 控制消息频率（bot 默认正常语速回复）
-- 建议用小号而非主号
+姝ｅ父浣跨敤涓嶄細銆備絾娉ㄦ剰锛?- 涓嶈鐢?bot 鍙戝箍鍛娿€侀獨鎵?- 鎺у埗娑堟伅棰戠巼锛坆ot 榛樿姝ｅ父璇€熷洖澶嶏級
+- 寤鸿鐢ㄥ皬鍙疯€岄潪涓诲彿
 </details>
 
 <details>
-<summary><b>Q: 导出聊天记录失败怎么办？</b></summary>
+<summary><b>Q: 瀵煎嚭鑱婂ぉ璁板綍澶辫触鎬庝箞鍔烇紵</b></summary>
 
-1. 关掉 QQ 重试
-2. 换 `.mht` 格式试试
-3. 用 QCE 工具（methods B）
-4. 直接把导出文件拖到项目文件夹，运行 `python setup.py persona`
+1. 鍏虫帀 QQ 閲嶈瘯
+2. 鎹?`.mht` 鏍煎紡璇曡瘯
+3. 鐢?QCE 宸ュ叿锛坢ethods B锛?4. 鐩存帴鎶婂鍑烘枃浠舵嫋鍒伴」鐩枃浠跺す锛岃繍琛?`python setup.py persona`
 </details>
 
 <details>
-<summary><b>Q: Bot 不回复怎么办？</b></summary>
+<summary><b>Q: Bot 涓嶅洖澶嶆€庝箞鍔烇紵</b></summary>
 
-1. 确认 QQ 小号已经扫码登录（能看到 QQ 在线）
-2. 确认 `python setup.py bot` 的窗口没关
-3. 确认 DeepSeek API Key 没输错
-4. 确认大号和小号是好友关系
-5. 看看 bot 窗口有没有报错日志
-</details>
+1. 纭 QQ 灏忓彿宸茬粡鎵爜鐧诲綍锛堣兘鐪嬪埌 QQ 鍦ㄧ嚎锛?2. 纭 `python setup.py bot` 鐨勭獥鍙ｆ病鍏?3. 纭 DeepSeek API Key 娌¤緭閿?4. 纭澶у彿鍜屽皬鍙锋槸濂藉弸鍏崇郴
+5. 鐪嬬湅 bot 绐楀彛鏈夋病鏈夋姤閿欐棩蹇?</details>
 
 <details>
-<summary><b>Q: ta 的语气不像怎么办？</b></summary>
+<summary><b>Q: ta 鐨勮姘斾笉鍍忔€庝箞鍔烇紵</b></summary>
 
-1. 导出更多聊天记录（越多越像）
-2. 导出时选「全部时间」
-3. 运行 `python setup.py persona` 重新生成
-4. 在 persona/SKILL.md 里手动调整
-</details>
+1. 瀵煎嚭鏇村鑱婂ぉ璁板綍锛堣秺澶氳秺鍍忥級
+2. 瀵煎嚭鏃堕€夈€屽叏閮ㄦ椂闂淬€?3. 杩愯 `python setup.py persona` 閲嶆柊鐢熸垚
+4. 鍦?persona/SKILL.md 閲屾墜鍔ㄨ皟鏁?</details>
 
 <details>
-<summary><b>Q: 能支持微信群聊吗？</b></summary>
+<summary><b>Q: 鑳芥敮鎸佸井淇＄兢鑱婂悧锛?/b></summary>
 
-目前只支持私聊（一对一）。群聊支持计划中。
-</details>
+鐩墠鍙敮鎸佺鑱婏紙涓€瀵逛竴锛夈€傜兢鑱婃敮鎸佽鍒掍腑銆?</details>
 
 <details>
-<summary><b>Q: Mac/Linux 能用吗？</b></summary>
+<summary><b>Q: Mac/Linux 鑳界敤鍚楋紵</b></summary>
 
-NapCat（QQ 注入框架）目前只支持 Windows。因为 QQ NT 只有 Windows 版本能用 NapCat 注入。
-</details>
+NapCat锛圦Q 娉ㄥ叆妗嗘灦锛夌洰鍓嶅彧鏀寔 Windows銆傚洜涓?QQ NT 鍙湁 Windows 鐗堟湰鑳界敤 NapCat 娉ㄥ叆銆?</details>
 
 ---
 
-## ⚠️ 免责声明
+## 鈿狅笍 鍏嶈矗澹版槑
 
-- 本项目仅供 **个人回忆整理、情感回顾、创作实验**
-- **严禁**用于：骚扰真人、冒充真人、侵犯隐私、报复或任何违法用途
-- 生成的一切内容都是基于本地材料的 AI 模拟，**不代表真实人物本人**
-- 请尊重真实沟通、真实边界和真实生活
-- 使用者自行承担一切后果
+- 鏈」鐩粎渚?**涓汉鍥炲繂鏁寸悊銆佹儏鎰熷洖椤俱€佸垱浣滃疄楠?*
+- **涓ョ**鐢ㄤ簬锛氶獨鎵扮湡浜恒€佸啋鍏呯湡浜恒€佷镜鐘殣绉併€佹姤澶嶆垨浠讳綍杩濇硶鐢ㄩ€?- 鐢熸垚鐨勪竴鍒囧唴瀹归兘鏄熀浜庢湰鍦版潗鏂欑殑 AI 妯℃嫙锛?*涓嶄唬琛ㄧ湡瀹炰汉鐗╂湰浜?*
+- 璇峰皧閲嶇湡瀹炴矡閫氥€佺湡瀹炶竟鐣屽拰鐪熷疄鐢熸椿
+- 浣跨敤鑰呰嚜琛屾壙鎷呬竴鍒囧悗鏋?
+---
+
+## 馃檹 鑷磋阿
+
+绔欏湪宸ㄤ汉鐨勮偐鑶€涓婏細
+
+- [NapCatQQ](https://github.com/NapNeko/NapCatQQ) 鈥?QQ NT 鍗忚妗嗘灦
+- [QCE (QQ Chat Exporter)](https://github.com/shuakami/qq-chat-exporter) 鈥?QQ 鑱婂ぉ瀵煎嚭绁炲櫒
+- [DeepSeek](https://platform.deepseek.com) 鈥?鍥戒骇鑹績澶фā鍨?- [OneBot 11](https://github.com/botuniverse/onebot-11) 鈥?鏈哄櫒浜烘爣鍑嗗崗璁?
+---
+
+## 馃搫 License
+
+MIT 漏 2026
 
 ---
 
-## 🙏 致谢
+猸?濡傛灉甯埌浣犱簡锛岀粰涓?Star 鍛梸
 
-站在巨人的肩膀上：
-
-- [NapCatQQ](https://github.com/NapNeko/NapCatQQ) — QQ NT 协议框架
-- [QCE (QQ Chat Exporter)](https://github.com/shuakami/qq-chat-exporter) — QQ 聊天导出神器
-- [DeepSeek](https://platform.deepseek.com) — 国产良心大模型
-- [OneBot 11](https://github.com/botuniverse/onebot-11) — 机器人标准协议
-
----
-
-## 📄 License
-
-MIT © 2026
-
----
-
-⭐ 如果帮到你了，给个 Star 呗~
