@@ -164,6 +164,17 @@ def step_build_persona(chat_file):
     her_call = input("你怎么叫 ta（如：焙焙、崽）：").strip()
     extra_info = input("其他补充（共同回忆、习惯、游戏等）：").strip()
 
+    # Save custom persona for later use by bot
+    import json as _json
+    custom_path = persona_dir / 'custom.json'
+    persona_dir.mkdir(parents=True, exist_ok=True)
+    _json.dump({
+        'personality': personality, 'speak_style': speak_style,
+        'relationship': relationship, 'your_call': your_call,
+        'her_call': her_call, 'extra_info': extra_info,
+        'target_name': target_name, 'your_name': your_name
+    }, custom_path, ensure_ascii=False, indent=2)
+
     print(f"\n正在分析聊天记录，对方： {target_name}...")
 
     # Parse chat file

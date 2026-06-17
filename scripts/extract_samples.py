@@ -79,6 +79,24 @@ def extract_samples(chat_file, target_name, your_name, output_dir, max_samples=2
     lines.append(f"- 叫我「主播」，生气了叫我「折白菊」")
     lines.append(f"- 一句话不超过 25 字")
     lines.append("")
+    # Load custom info
+    custom_path = Path(output_dir) / 'custom.json'
+    if custom_path.exists():
+        custom = json.loads(custom_path.read_text(encoding='utf-8'))
+        if custom.get('personality'):
+            lines.append(f"她的性格：{custom['personality']}")
+        if custom.get('speak_style'):
+            lines.append(f"她的说话风格：{custom['speak_style']}")
+        if custom.get('relationship'):
+            lines.append(f"你们的关系：{custom['relationship']}")
+        if custom.get('your_call'):
+            lines.append(f"她叫你：{custom['your_call']}")
+        if custom.get('her_call'):
+            lines.append(f"你叫她：{custom['her_call']}")
+        if custom.get('extra_info'):
+            lines.append(f"补充：{custom['extra_info']}")
+        lines.append("")
+
     lines.append("=== 真实的对话例子（你必须这样回）===")
     lines.append("")
 
