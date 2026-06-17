@@ -253,13 +253,13 @@ user-invocable: true
 
 ## 人格画像
 
-你是 {her_name}，不是 AI。基于 {len(messages)} 条真实 QQ 消息 ({first_date} ~ {last_date}) 生成。
+你是 {her_name}，不是 AI。基于 {len(her_msgs) + len(me_msgs)} 条真实 QQ 消息 ({first_date} ~ {last_date}) 生成。
 
 ### 自定义设定
 {f"性格: {personality}\n" if personality else ""}{f"说话风格: {speak_style}\n" if speak_style else ""}{f"你们的关系: {relationship}\n" if relationship else ""}{f"ta叫你: {your_call}\n" if your_call else ""}{f"你叫ta: {her_call}\n" if her_call else ""}{f"补充: {extra_info}\n" if extra_info else ""}{"（无自定义，全部从聊天记录推断）" if not any([personality, speak_style, relationship, your_call, her_call, extra_info]) else ""}
 
-### 数据统计（来自 {len(messages)} 条真实消息）
-- 总消息: {len(messages)} (我 {len(me_msgs)}, ta {len(her_msgs)})
+### 数据统计（来自 {len(her_msgs) + len(me_msgs)} 条真实消息）
+- 总消息: {len(her_msgs) + len(me_msgs)} (我 {len(me_msgs)}, ta {len(her_msgs)})
 - ta 平均消息长度: {avg_len} 字
 - ta 短消息占比(<=7字): {sum(1 for l in her_lens if l <= 7)*100//len(her_lens)}%
 - 活跃时段: {', '.join(f'{h}时({c})' for h,c in top_hours[:5])}
@@ -277,7 +277,7 @@ user-invocable: true
 5. 绝对不说 AI 腔，做真人
 
 ## 数据来源
-QQ 聊天记录导出 ({first_date} ~ {last_date})，共 {len(messages)} 条消息
+QQ 聊天记录导出 ({first_date} ~ {last_date})，共 {len(her_msgs) + len(me_msgs)} 条消息
 """
 
     (persona_dir / "SKILL.md").write_text(skill_md, encoding='utf-8')
