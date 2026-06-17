@@ -2,12 +2,12 @@
 """
 ex-bot v1.0 - Ex-Partner QQ Chat Bot
 =====================================
-Full-auto installer + persona builder + DeepSeek-powered QQ bot.
+全自动安装 + 人格画像构建 + DeepSeek QQ 机器人
 
 Usage:
-  python setup.py install    # One-click setup
-  python setup.py bot        # Start the bot
-  python setup.py persona    # Build persona from chat export
+  python setup.py install    # 一键安装
+  python setup.py bot        # 启动机器人
+  python setup.py persona    # 从聊天记录构建人格画像
 
 Steps:
   1. Enter your DeepSeek API key
@@ -49,70 +49,70 @@ def save_config(cfg):
 
 
 def step_api_key():
-    """Step 1: Get DeepSeek API key"""
+    """第 1 步： Get DeepSeek API key"""
     cfg = load_config()
     if cfg.get("deepseek_key"):
-        print(f"[OK] DeepSeek API key: {cfg['deepseek_key'][:12]}...")
+        print(f"[成功] DeepSeek API key: {cfg['deepseek_key'][:12]}...")
         return cfg["deepseek_key"]
 
     print("\n" + "=" * 50)
-    print(" Step 1: DeepSeek API Key")
+    print(" 第 1 步： DeepSeek API Key")
     print("=" * 50)
     print("""
-Go to: https://platform.deepseek.com/
-Register -> API Keys -> Create new key
-Copy the key (starts with 'sk-')
+打开：https://platform.deepseek.com/
+注册 → API Keys → 创建新密钥
+复制密钥（以 sk- 开头） 'sk-')
 """)
-    key = input("Paste your DeepSeek API key: ").strip()
+    key = input("粘贴你的 DeepSeek API 密钥： ").strip()
     if not key or not key.startswith("sk-"):
-        print("[ERROR] Invalid API key. Must start with 'sk-'")
+        print("[错误] 无效的 API 密钥，必须以 sk- 开头 'sk-'")
         sys.exit(1)
 
     cfg["deepseek_key"] = key
     save_config(cfg)
-    print("[OK] API key saved!")
+    print("[成功] API 密钥已保存！")
     return key
 
 
 def step_install_deps():
-    """Install Python dependencies"""
+    """安装 Python 依赖"""
     print("\n" + "=" * 50)
-    print(" Step 2: Installing Dependencies")
+    print(" 第 2 步： 安装依赖")
     print("=" * 50)
 
     deps = ["websockets", "httpx"]
     for dep in deps:
         print(f"Installing {dep}...")
         subprocess.run([sys.executable, "-m", "pip", "install", dep, "-q"], check=False)
-    print("[OK] Dependencies installed!")
+    print("[成功] 依赖安装完成！")
 
 
 def step_qq_export():
-    """Step 3: Guide QQ chat export"""
+    """第 3 步： 引导导出 QQ 聊天记录"""
     cfg = load_config()
 
     print("\n" + "=" * 50)
-    print(" Step 3: Export QQ Chat History")
+    print(" 第 3 步： 导出 QQ 聊天记录")
     print("=" * 50)
     print("""
-You need to export your chat history with the person.
-Choose one method:
+你需要导出和 ta 的聊天记录。
+选择一种方式：
 
   [1] QCE Web UI (recommended)
       Open http://localhost:40653/qce-v4-tool
       Token in: %USERPROFILE%\\.qq-chat-exporter\\security.json
 
-  [2] I already have the export file
-      Put your .txt file in the project folder
+  [2] 我已经有导出好的文件
+      把你的 .txt 文件放进项目文件夹
 
-  [3] QQ built-in Message Manager
-      Open QQ -> chat window -> ... -> Message Manager -> Export as .txt
+  [3] QQ 自带消息管理器导出
+      打开 QQ → 聊天窗口 → 右键 → 消息管理器 → 导出为 .txt
 """)
 
-    choice = input("Choose [1/2/3]: ").strip()
+    choice = input("请选择 [1/2/3]： ").strip()
 
     if choice == "1":
-        file = input("Path to exported .txt file: ").strip().strip('"')
+        file = input("导出文件的路径： ").strip().strip('"')
     elif choice == "2":
         txt_files = list(Path.home().joinpath("Desktop").glob("*.txt")) + \
                      list(Path.cwd().glob("*.txt"))
@@ -122,36 +122,36 @@ Choose one method:
         try:
             file = str(txt_files[int(idx) - 1])
         except:
-            print("[ERROR] Invalid choice")
+            print("[错误] Invalid choice")
             sys.exit(1)
     elif choice == "3":
-        file = input("Path to exported .txt file: ").strip().strip('"')
+        file = input("导出文件的路径： ").strip().strip('"')
     else:
-        print("[ERROR] Invalid choice")
+        print("[错误] Invalid choice")
         sys.exit(1)
 
     if not Path(file).exists():
-        print(f"[ERROR] File not found: {file}")
+        print(f"[错误] 文件未找到： {file}")
         sys.exit(1)
 
     cfg["chat_file"] = file
     save_config(cfg)
-    print(f"[OK] Chat file: {file}")
-    print(f"    Size: {Path(file).stat().st_size // 1024}KB")
+    print(f"[成功] 聊天文件： {file}")
+    print(f"    大小： {Path(file).stat().st_size // 1024}KB")
     return file
 
 
 def step_build_persona(chat_file):
-    """Step 4: Analyze chat and build persona"""
+    """第 4 步： Analyze chat and build persona"""
     print("\n" + "=" * 50)
-    print(" Step 4: Building Persona")
+    print(" 第 4 步： 生成人格画像")
     print("=" * 50)
 
-    target_name = input("Person's nickname/codename: ").strip()
-    your_name = input("Your QQ nickname: ").strip()
-    slug = input("Short slug for this persona [default: default]: ").strip() or "default"
+    target_name = input("对方's 的昵称/代号： ").strip()
+    your_name = input("你的 QQ 昵称： ").strip()
+    slug = input("人格画像的简短标识 [默认: default]： ").strip() or "default"
 
-    print(f"\nAnalyzing chat with {target_name}...")
+    print(f"\n正在分析聊天记录，对方： {target_name}...")
 
     # Parse chat file
     with open(chat_file, 'r', encoding='utf-8', errors='ignore') as f:
@@ -161,28 +161,28 @@ def step_build_persona(chat_file):
     is_qce = text.startswith("[QQChatExporter")
 
     if is_qce:
-        print("[QCE format detected]")
-        messages = _parse_qce(text, your_name)
+        print("[检测到 QCE 格式]")
+        条消息 = _parse_qce(text, your_name)
     else:
-        print("[QQ Message Manager format detected]")
-        messages = _parse_qq_txt(text, your_name)
+        print("[检测到 QQ 消息管理器格式]")
+        条消息 = _parse_qq_txt(text, your_name)
 
-    print(f"Parsed {len(messages)} messages")
+    print(f"已解析 {len(条消息)} 条消息")
 
-    if len(messages) < 100:
-        print("[WARNING] Very few messages parsed. Check the export format.")
+    if len(条消息) < 100:
+        print("[WARNING] Very few 条消息 parsed. Check the export format.")
 
     # Count stats
-    her_msgs = [m for m in messages if not m['is_me']]
-    me_msgs = [m for m in messages if m['is_me']]
+    her_msgs = [m for m in 条消息 if not m['is_me']]
+    me_msgs = [m for m in 条消息 if m['is_me']]
 
     if len(her_msgs) < 10:
-        print("[ERROR] Couldn't identify target's messages.")
+        print("[错误] Couldn't identify target's 条消息.")
         sys.exit(1)
 
     her_name = max(set(m['sender'] for m in her_msgs), key=lambda x: sum(1 for m in her_msgs if m['sender'] == x))
-    print(f"Target identified: {her_name} ({len(her_msgs)} messages)")
-    print(f"You: {your_name} ({len(me_msgs)} messages)")
+    print(f"识别出对方： {her_name} ({len(her_msgs)} 条消息)")
+    print(f"你： {your_name} ({len(me_msgs)} 条消息)")
 
     # Build memory and persona
     from collections import Counter
@@ -192,12 +192,12 @@ def step_build_persona(chat_file):
 
     # Time patterns
     hours = Counter()
-    for m in messages:
+    for m in 条消息:
         try:
             hours[int(m['timestamp'][11:13])] += 1
         except:
             pass
-    night_pct = sum(hours.get(h, 0) for h in range(0, 6)) * 100 // len(messages)
+    night_pct = sum(hours.get(h, 0) for h in range(0, 6)) * 100 // len(条消息)
     top_hours = hours.most_common(5)
 
     # Emojis
@@ -206,7 +206,7 @@ def step_build_persona(chat_file):
     top_emoji = Counter(emojis).most_common(10)
 
     # First/last dates
-    dates = sorted(set(m['timestamp'][:10] for m in messages if m['timestamp'][:4].isdigit()))
+    dates = sorted(set(m['timestamp'][:10] for m in 条消息 if m['timestamp'][:4].isdigit()))
     first_date = dates[0] if dates else "?"
     last_date = dates[-1] if dates else "?"
 
@@ -214,7 +214,7 @@ def step_build_persona(chat_file):
     from datetime import datetime as dt_mod
     her_init = me_init = 0
     prev_t = None
-    for m in messages:
+    for m in 条消息:
         try:
             t = dt_mod.strptime(m['timestamp'], '%Y-%m-%d %H:%M:%S')
             if prev_t is None or (t - prev_t).total_seconds() > 3600:
@@ -226,51 +226,51 @@ def step_build_persona(chat_file):
         except:
             pass
 
-    # Build persona skill
+    # 构建人格画像 skill
     persona_dir = PERSONA_SKILL_DIR / slug
     persona_dir.mkdir(parents=True, exist_ok=True)
 
     skill_md = f"""---
 name: "ex-{slug}"
-description: "{her_name} - AI persona based on {len(messages)} real QQ messages"
+description: "{her_name} - AI persona based on {len(条消息)} real QQ 条消息"
 user-invocable: true
 ---
 
 # {her_name}
 
-## Persona
+## 对方a
 
-You are {her_name}, a real person modeled from {len(messages)} QQ messages ({first_date} to {last_date}).
+You are {her_name}, a real person modeled from {len(条消息)} QQ 条消息 ({first_date} to {last_date}).
 Call me "{your_name}".
 
 Speaking style:
 - Average message length: {avg_len} chars
-- Short messages (under 7 chars): {sum(1 for l in her_lens if l <= 7)*100//len(her_lens)}%
+- Short 条消息 (under 7 chars): {sum(1 for l in her_lens if l <= 7)*100//len(her_lens)}%
 - Active hours: {', '.join(f'{h}h({c})' for h,c in top_hours[:5])}
-- Night owl: {night_pct}% messages at 0-6am
+- Night owl: {night_pct}% 条消息 at 0-6am
 - Emoji style: {', '.join(f'{e}({c})' for e,c in top_emoji[:8]) if top_emoji else 'minimal'}
 
 Conversation patterns:
 - Convo initiations: me {me_init}, her {her_init}
-- Total messages: {len(messages)} (me {len(me_msgs)}, her {len(her_msgs)})
+- Total 条消息: {len(条消息)} (me {len(me_msgs)}, her {len(her_msgs)})
 
 Rules:
 1. You are {her_name}, NOT an AI assistant
 2. Keep the person's real edges, limits, and inconsistencies
 3. Do not invent shared memories
-4. Use the speaking style from the data: {avg_len} avg chars, short messages preferred
+4. Use the speaking style from the data: {avg_len} avg chars, short 条消息 preferred
 5. If unsure, say so
 6. Never use AI-speak. Be human. 
 
 ## Memory
 
 - Knows {your_name} since {first_date}
-- {len(messages)} messages exchanged
+- {len(条消息)} 条消息 exchanged
 - Her nickname: {her_name}
 - Your nickname to her: {your_name}
 
 ## Source
-Built from QQ chat export, {len(messages)} messages
+Built from QQ chat export, {len(条消息)} 条消息
 """
 
     (persona_dir / "SKILL.md").write_text(skill_md, encoding='utf-8')
@@ -280,7 +280,7 @@ Built from QQ chat export, {len(messages)} messages
         "slug": slug,
         "name": her_name,
         "your_name": your_name,
-        "messages": len(messages),
+        "条消息": len(条消息),
         "first_date": first_date,
         "last_date": last_date,
         "created": dt_mod.now().isoformat()
@@ -294,15 +294,15 @@ Built from QQ chat export, {len(messages)} messages
     cfg["your_name"] = your_name
     save_config(cfg)
 
-    print(f"\n[OK] Persona built: {slug}")
-    print(f"    Skill file: {persona_dir / 'SKILL.md'}")
-    print(f"    Can be used with Kun/Codex: @ex-{slug}")
+    print(f"\n[成功] 人格画像已生成： {slug}")
+    print(f"    角色卡文件： {persona_dir / 'SKILL.md'}")
+    print(f"    可在 Kun/Codex 中使用： @ex-{slug}")
     return slug, her_name
 
 
 def _parse_qce(text, your_name):
     """Parse QCE (QQ Chat Exporter) format"""
-    messages = []
+    条消息 = []
     blocks = text.split('\n\n')
     for block in blocks:
         block = block.strip()
@@ -325,18 +325,18 @@ def _parse_qce(text, your_name):
             continue
         content = block[content_start + 4:].strip()
 
-        messages.append({
+        条消息.append({
             'sender': sender,
             'timestamp': time_match.group(1),
             'content': content,
             'is_me': sender == your_name
         })
-    return messages
+    return 条消息
 
 
 def _parse_qq_txt(text, your_name):
-    """Parse QQ Message Manager txt format"""
-    messages = []
+    """Parse QQ 在 QQ 上给 Manager txt format"""
+    条消息 = []
     pattern = re.compile(
         r'^(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})\s+(.+?)(?:\((\d+)\))?\s*$',
         re.MULTILINE
@@ -348,20 +348,20 @@ def _parse_qq_txt(text, your_name):
         m = pattern.match(line.strip())
         if m:
             if current:
-                messages.append(current)
+                条消息.append(current)
             ts, sender, qq = m.groups()
             current = {'timestamp': ts, 'sender': sender.strip(), 'content': '', 'is_me': sender.strip() == your_name}
         elif current and line.strip() and not line.startswith('==='):
             current['content'] += ('\n' if current['content'] else '') + line.strip()
     if current and current.get('content'):
-        messages.append(current)
-    return messages
+        条消息.append(current)
+    return 条消息
 
 
 def step_start_napcat():
-    """Step 5: Check/start NapCat"""
+    """第 5 步： 检查/启动 NapCat"""
     print("\n" + "=" * 50)
-    print(" Step 5: NapCat (QQ Bot Framework)")
+    print(" 第 5 步： NapCat（QQ 机器人框架）")
     print("=" * 50)
 
     # Check if NapCat is already installed
@@ -374,16 +374,16 @@ def step_start_napcat():
     for p in napcat_paths:
         if (p / "NapCatWinBootMain.exe").exists():
             napcat_dir = p
-            print(f"[OK] NapCat found: {p}")
+            print(f"[成功] 找到 NapCat： {p}")
             break
 
     if not napcat_dir:
-        print("[WARN] NapCat not found.")
-        print("Please install NapCat first:")
+        print("[警告] 未找到 NapCat。")
+        print("请先安装 NapCat：")
         print("  https://github.com/NapNeko/NapCatQQ/releases")
         print("  Download: NapCat.Shell.Windows.OneKey.zip")
         print("  Extract to: %USERPROFILE%\\Documents\\Tencent Files\\NapCat")
-        print("  Run: NapCatInstaller.exe")
+        print("  运行: NapCatInstaller.exe")
         input("\nPress Enter after installing NapCat...")
 
         for p in napcat_paths:
@@ -392,13 +392,13 @@ def step_start_napcat():
                 break
 
     if not napcat_dir:
-        print("[ERROR] NapCat still not found. Exiting.")
+        print("[错误] NapCat still not found. Exiting.")
         sys.exit(1)
 
     # Configure OneBot
-    qq_number = input("\nEnter the QQ number for the bot account (small/alt account): ").strip()
+    qq_number = input("\n输入机器人用的 QQ 号（小号）： ").strip()
     if not qq_number.isdigit():
-        print("[ERROR] Invalid QQ number")
+        print("[错误] 无效的 QQ 号")
         sys.exit(1)
 
     # Write OneBot config
@@ -436,7 +436,7 @@ def step_start_napcat():
         }
         cfg_path = version_dir / f"onebot11_{qq_number}.json"
         cfg_path.write_text(json.dumps(ob_config, indent=2, ensure_ascii=False))
-        print(f"[OK] OneBot config written: {cfg_path}")
+        print(f"[成功] OneBot 配置已写入： {cfg_path}")
 
     cfg = load_config()
     cfg["bot_qq"] = qq_number
@@ -444,25 +444,25 @@ def step_start_napcat():
     save_config(cfg)
 
     print("\n" + "=" * 50)
-    print(" Next: Start NapCat")
+    print(" 下一步：启动 NapCat")
     print("=" * 50)
-    print(f"Run: {napcat_dir / 'NapCatWinBootMain.exe'} {qq_number}")
-    print("Scan QR code to login the bot QQ account")
-    input("\nPress Enter after QQ login is complete...")
+    print(f"运行: {napcat_dir / 'NapCatWinBootMain.exe'} {qq_number}")
+    print("请用手机 QQ 扫描屏幕上的二维码登录")
+    input("\n登录成功后按回车继续...")
 
     return qq_number
 
 
 def step_start_bot():
-    """Step 6: Launch the bot"""
+    """第 6 步： 启动机器人"""
     print("\n" + "=" * 50)
-    print(" Step 6: Starting Bot")
+    print(" 第 6 步： 启动机器人")
     print("=" * 50)
 
     cfg = load_config()
 
     bot_qq = cfg.get("bot_qq", "unknown")
-    target_qq = input("Your main QQ number (bot will only reply to you): ").strip()
+    target_qq = input("你的主 QQ 号（机器人只回复这个号）： ").strip()
     cfg["target_qq"] = target_qq
     save_config(cfg)
 
@@ -479,19 +479,19 @@ def step_start_bot():
     (PROJECT_ROOT / "config" / "bot_config.json").write_text(json.dumps(bot_cfg, indent=2))
 
     print(f"""
-Bot config:
-  Bot QQ:     {bot_qq}
-  Your QQ:    {target_qq}
-  Persona:    {cfg.get('persona_name', 'unknown')}
-  DeepSeek:   {cfg['deepseek_key'][:12]}...
+机器人配置：
+  机器人 QQ：     {bot_qq}
+  你的 QQ：    {target_qq}
+  对方a:    {cfg.get('persona_name', 'unknown')}
+  DeepSeek：   {cfg['deepseek_key'][:12]}...
 
-Starting bot in new window...
+正在新窗口启动机器人...
 """)
 
     # Launch bot
     bot_script = PROJECT_ROOT / "scripts" / "bot.py"
     if not bot_script.exists():
-        print("[ERROR] bot.py not found! Run setup first.")
+        print("[错误] 未找到 bot.py！请先运行 setup。")
         sys.exit(1)
 
     subprocess.Popen(
@@ -501,17 +501,17 @@ Starting bot in new window...
     )
 
     print("\n" + "=" * 50)
-    print(" DONE! Bot is running.")
+    print(" 完成！机器人已启动。")
     print("=" * 50)
     print(f"""
-Message {bot_qq} on QQ with your main account ({target_qq}).
-The bot will auto-reply using DeepSeek + persona.
+在 QQ 上给 {bot_qq} 发消息（用你的主号 ({target_qq}).
+机器人将使用 DeepSeek + 人格画像自动回复。
 
-Commands in QQ chat:
-  /reset  - Clear conversation memory
-  Stop    - Close the bot cmd window
+QQ 聊天中的指令：
+  /reset  - 清空对话记忆
+  Stop    - 关闭 bot 的命令行窗口
 
-To restart later:
+以后重新启动：
   python {PROJECT_ROOT / 'scripts' / 'bot.py'}
 """)
 
@@ -519,13 +519,13 @@ To restart later:
 def cmd_install():
     """Full installation wizard"""
     print(BANNER)
-    print("  Full Installation Wizard\n")
+    print("  全自动安装向导\n")
 
     step_api_key()
     step_install_deps()
 
-    print("\n[OPTIONAL] Persona setup...")
-    choice = input("Build persona from chat export? [y/N]: ").strip().lower()
+    print("\n[可选] 人格画像设置...")
+    choice = input("从聊天记录生成人格画像？[y/N]： ").strip().lower()
     if choice == 'y':
         chat_file = step_qq_export()
         step_build_persona(chat_file)
@@ -538,14 +538,14 @@ def cmd_bot():
     """Just start the bot"""
     cfg = load_config()
     if not cfg.get("deepseek_key"):
-        print("[ERROR] Run 'python setup.py install' first")
+        print("[错误] 运行 'python setup.py install' first")
         sys.exit(1)
 
     step_start_bot()
 
 
 def cmd_persona():
-    """Build persona only"""
+    """构建人格画像 only"""
     chat_file = step_qq_export()
     step_build_persona(chat_file)
 
@@ -564,4 +564,4 @@ if __name__ == "__main__":
         print(f"Usage: python setup.py [{'|'.join(commands)}]")
         print(f"  install  - Full setup wizard")
         print(f"  bot      - Start bot only")
-        print(f"  persona  - Build persona only")
+        print(f"  persona  - 构建人格画像 only")
