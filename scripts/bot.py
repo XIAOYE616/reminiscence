@@ -29,7 +29,7 @@ SYSTEM_PROMPT = PERSONA
 # Load config for deepseek key if present
 cfg_file = Path(__file__).parent.parent / "config" / "config.json"
 if cfg_file.exists():
-    cfg = json.loads(cfg_file.read_text(encoding="utf-8"))
+    cfg = json.loads(cfg_file.read_text(encoding="utf-8-sig", errors="ignore"))
     DEEPSEEK_KEY = cfg.get("deepseek_key", DEEPSEEK_KEY)
     TARGET_QQ = int(cfg.get("target_qq", TARGET_QQ))
 
