@@ -76,7 +76,18 @@ python setup.py
 4. 时间范围选 **全部**
 5. 保存到桌面
 
-### 方法 B：QCE（功能更强）
+### 方法 B：QCE — QQ Chat Exporter（推荐，功能最强）
+
+QCE 是最强的 QQ 聊天导出工具，配合 NapCat 使用：
+https://github.com/shuakami/qq-chat-exporter
+
+1. 确保 NapCat Framework 已启动（NapCat + QCE 一体化）
+2. 打开浏览器访问 http://localhost:40653/qce-v4-tool
+3. Token 在 C:\\Users\\你的用户名\\.qq-chat-exporter\\security.json 的 accessToken 字段
+4. 选择要导出的人 → 设置时间范围 → 导出为 .txt
+5. 导出的文件就是 setup.py 需要的格式
+
+已打包好的 NapCat+QCE 一体化版本见最新 Release。
 
 如果已安装 NapCat Framework（含 QCE）：
 
