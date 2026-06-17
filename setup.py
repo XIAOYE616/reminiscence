@@ -246,12 +246,12 @@ def step_build_persona(chat_file):
     # Save custom persona for bot prompt
     import json as _json
     custom_path = persona_dir / "custom.json"
-    _json.dump({
+    custom_path.write_text(_json.dumps({
         "personality": personality, "speak_style": speak_style,
         "relationship": relationship, "your_call": your_call,
         "her_call": her_call, "extra_info": extra_info,
         "target_name": target_name, "your_name": your_name
-    }, custom_path, ensure_ascii=False, indent=2)
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
 
     skill_md = f"""---
 name: "ex-{slug}"
